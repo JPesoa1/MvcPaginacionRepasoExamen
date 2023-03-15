@@ -1,0 +1,61 @@
+﻿@model List<Empleado>
+@{
+    int numeroregistros = (int)ViewData["REGISTROS"];
+    int numeropagina = 1;
+}
+
+
+
+<h1 style="color:blue">@ViewData["OFICIO"]</h1>
+<hr/>
+<form method="post">
+    <label class="form-control">
+        Introduzca el salto
+    </label>
+    <input type="hidden" name="oficio" value="@ViewData["OFICIO"]"/>
+    <input type="text" name="salto" class="form-control"/>
+    <button class="btn btn-primary">
+        Confirmar
+    </button>
+</form>
+@if (Model != null)
+{
+    <ul class="list-group list-group-horizontal">
+        @for (int i = 1; i <= numeroregistros; i += int.Parse(ViewData["SALTO"].ToString()))
+        {
+            <li class="list-group-item list-group-item-warning">
+                <a asp-controller="Paginacion"
+           asp-action="Index"
+           asp-route-posicion="@i"
+           asp-route-oficio="@ViewData["OFICIO"]"
+           asp-route-salto="@ViewData["SALTO"]">
+                    Página @numeropagina
+                </a>
+            </li>
+            numeropagina += 1;
+        }
+    </ul>
+
+
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Empleado emp in Model)
+            {
+
+                <tr>
+                    <td>@emp.Apellido</td>
+                    <td>@emp.Oficio</td>
+                    <td>@emp.Salario</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
